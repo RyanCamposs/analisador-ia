@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import io
 import re
-from datetime import datetime
 from pathlib import Path
 
 import matplotlib
@@ -146,7 +145,7 @@ def _cabecalho(pdf: FPDF, titulo: str, nome: str, linhas: int, colunas: int) -> 
     pdf.set_font("DejaVu", size=7.5)
     pdf.set_text_color(200, 210, 225)
     meta = [nome[:60], f"{an.formatar_numero(linhas)} registros · {colunas} colunas",
-            f"Gerado em {datetime.now():%d/%m/%Y às %H:%M}"]
+            f"Gerado em {an.agora():%d/%m/%Y às %H:%M}"]
     for i, linha in enumerate(meta):
         pdf.set_xy(pdf.w - pdf.r_margin - 75, 11 + i * 4.5)
         pdf.cell(75, 4, linha, align="R")

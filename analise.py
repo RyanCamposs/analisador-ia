@@ -3,11 +3,21 @@
 from __future__ import annotations
 
 import re
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+
+FUSO = ZoneInfo("America/Sao_Paulo")
+
+
+def agora() -> datetime:
+    """Data e hora de Brasília (o servidor na nuvem usa outro fuso)."""
+    return datetime.now(FUSO)
+
 
 # ---------------------------------------------------------------------------
 # Leitura e preparação
@@ -379,7 +389,7 @@ def grafico_categoria(df: pd.DataFrame, col: str, valor: str | None = None, top:
                       hovertemplate=f"%{{y}}<br>{eixo}: %{{x:,.2f}}<extra></extra>")
     maximo = float(dados[eixo].max()) if len(dados) else 1
     fig.update_layout(xaxis=dict(showgrid=False, showticklabels=False, title=None,
-                                 range=[0, maximo * 1.18]),
+                                 range=[0, maximo * 1.3]),
                       yaxis=dict(showgrid=False, title=None, type="category"))
     return _finalizar(fig, altura or max(260, 34 * len(dados) + 90))
 
@@ -496,6 +506,6 @@ def grafico_resultado(res: pd.DataFrame):
                  color_discrete_sequence=[COR_PRINCIPAL], text=dados[valor].map(formatar_numero))
     fig.update_traces(textposition="outside", cliponaxis=False, textfont=dict(color=TINTA_2, size=11))
     fig.update_layout(xaxis=dict(showgrid=False, showticklabels=False, title=None,
-                                 range=[0, float(dados[valor].max()) * 1.18]),
+                                 range=[0, float(dados[valor].max()) * 1.3]),
                       yaxis=dict(showgrid=False, title=None, type="category"))
     return _finalizar(fig, max(240, 32 * len(dados) + 90))

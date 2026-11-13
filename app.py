@@ -8,7 +8,6 @@ from __future__ import annotations
 import html
 import io
 import os
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -334,7 +333,7 @@ st.markdown(f"""
   <div><div class="sobre">Relatório de análise</div><h1>{html.escape(titulo)}</h1></div>
   <div class="meta">{html.escape(nome)}{detalhe_aba}<br>
     {an.formatar_numero(r['linhas'])} registros · {r['colunas']} colunas ·
-    atualizado em {datetime.now():%d/%m/%Y às %H:%M}</div>
+    atualizado em {an.agora():%d/%m/%Y às %H:%M}</div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -491,7 +490,7 @@ with aba_relatorio:
             botao_pdf("pdf_relatorio", "Baixar PDF completo", primario=True)
         b2.download_button(
             "Baixar texto (.md)", icon=":material/download:", width="stretch",
-            data=f"# Relatório — {nome}\n_Gerado em {datetime.now():%d/%m/%Y %H:%M}_\n\n"
+            data=f"# Relatório — {nome}\n_Gerado em {an.agora():%d/%m/%Y %H:%M}_\n\n"
                  + st.session_state.relatorio,
             file_name=f"relatorio_{Path(nome).stem}.md",
             mime="text/markdown",
