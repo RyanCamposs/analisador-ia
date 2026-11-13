@@ -229,8 +229,7 @@ if "uso_ia" not in st.session_state:
 limite_ativo = usando_servidor and LIMITE_IA > 0
 restantes = max(LIMITE_IA - st.session_state.uso_ia, 0) if limite_ativo else None
 with st.sidebar:
-    if limite_ativo:
-        st.caption(f"Uso da IA nesta sessão: {st.session_state.uso_ia}/{LIMITE_IA}")
+    contador_uso = st.empty()  # preenchido no fim da página, depois das chamadas à IA
     if AUTOR or LINK_GITHUB or LINK_LINKEDIN:
         links = " · ".join(f"[{n}]({u})" for n, u in (("GitHub", LINK_GITHUB), ("LinkedIn", LINK_LINKEDIN)) if u)
         st.markdown('<div class="sec-lat">Projeto de portfólio</div>', unsafe_allow_html=True)
@@ -577,3 +576,7 @@ with aba_dados:
 
     secao("Base completa")
     st.dataframe(df, height=420, width="stretch", hide_index=True)
+
+# Atualiza o contador de uso depois de eventuais chamadas à IA nesta execução
+if limite_ativo:
+    contador_uso.caption(f"Uso da IA nesta sessão: {st.session_state.uso_ia}/{LIMITE_IA}")
